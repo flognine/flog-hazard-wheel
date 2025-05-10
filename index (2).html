@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLOG Hazard Wheel</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #header {
+      width: 80%;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+    #wheel {
+      width: 300px;
+      height: 300px;
+      margin: 20px auto;
+      border-radius: 50%;
+      background-image: url('GOLD WHEEL RAGE.jpg');
+      background-size: cover;
+      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+    #hazardImage {
+      width: 80%;
+      max-width: 300px;
+      display: none;
+      margin: 10px auto;
+    }
+  </style>
+</head>
+<body>
+  <img id="header" src="purp.JPG" alt="HAZARD WHEEL" />
+  <div id="wheel"></div>
+  <img id="hazardImage" src="" alt="Hazard" />
+
+  <script>
+    const wheel = document.getElementById("wheel");
+    const hazardImage = document.getElementById("hazardImage");
+
+    const segmentCount = 8;
+    const sounds = [
+      "RAGE.mp3", "NO PENALTY.mp3", "SAND TRAP.mp3", "BUSHES.mp3",
+      "WATER TRAP.mp3", "NO PENALTY.mp3", "SAND TRAP.mp3", "BUSHES.mp3"
+    ];
+    const hazards = [
+      "new rage segment.JPG", "new no penalty.JPG", "new sand.JPG", "new bushes.JPG",
+      "water new.JPG", "new no penalty.JPG", "new sand.JPG", "new bushes.JPG"
+    ];
+
+    let currentRotation = 0;
+
+    function spinWheel() {
+      const spins = Math.floor(Math.random() * 3 + 3);
+      const stopAngle = Math.floor(Math.random() * 360);
+      const totalRotation = spins * 360 + stopAngle;
+      currentRotation += totalRotation;
+      wheel.style.transform = 'rotate(' + currentRotation + 'deg)';
+
+      setTimeout(() => {
+        const segmentAngle = 360 / segmentCount;
+        const normalizedRotation = currentRotation % 360;
+        const segmentIndex = Math.floor((360 - normalizedRotation) / segmentAngle) % segmentCount;
+
+        playSound(segmentIndex);
+        showHazard(segmentIndex);
+      }, 4000);
+    }
+
+    function playSound(index) {
+      const audio = new Audio(sounds[index]);
+      audio.play();
+    }
+
+    function showHazard(index) {
+      hazardImage.src = hazards[index];
+      hazardImage.style.display = 'block';
+      setTimeout(() => {
+        hazardImage.style.display = 'none';
+      }, 2000);
+    }
+
+    wheel.addEventListener('click', spinWheel);
+  </script>
+</body>
+</html>
